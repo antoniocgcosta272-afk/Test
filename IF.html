@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Completo IFSUL</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #1D9E75;
+    --green-dark: #0F6E56;
+    --green-light: #E1F5EE;
+    --green-text: #085041;
+    --blue-light: #E6F1FB;
+    --blue-text: #185FA5;
+    --amber-light: #FAEEDA;
+    --amber-text: #854F0B;
+    --coral-light: #FAECE7;
+    --coral-text: #993C1D;
+    --red-light: #FCEBEB;
+    --red-text: #A32D2D;
+    --gray: #f7f8f9;
+    --gray-border: #e4e6ea;
+    --text: #1a1a1a;
+    --text-muted: #6b7280;
+    --white: #ffffff;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f0f2f5;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; padding: 2rem 1rem; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+    border-radius: var(--radius);
+    padding: 3rem 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -30px;
+    width: 250px; height: 250px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 12px; }
+  .hero h1 { font-size: 32px; font-weight: 700; color: white; margin-bottom: 10px; line-height: 1.2; }
+  .hero p { font-size: 16px; color: rgba(255,255,255,0.85); margin-bottom: 1.75rem; }
+  .badge-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 500; color: white; }
+
+  /* STATS */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+  .stat { background: white; border-radius: var(--radius); padding: 1.25rem; text-align: center; border: 1px solid var(--gray-border); }
+  .stat-num { font-size: 28px; font-weight: 700; color: var(--green); }
+  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  /* NAV */
+  .nav { display: flex; gap: 6px; margin-bottom: 1.5rem; background: white; padding: 6px; border-radius: var(--radius); border: 1px solid var(--gray-border); }
+  .nav-btn { flex: 1; padding: 10px; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; background: transparent; color: var(--text-muted); transition: all 0.2s; }
+  .nav-btn.active { background: var(--green); color: white; }
+  .nav-btn:hover:not(.active) { background: var(--gray); color: var(--text); }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* SUBJECT CARDS */
+  .subject-card { background: white; border: 1px solid var(--gray-border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
+  .subject-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .subject-icon { width: 42px; height: 42px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .subject-title { font-size: 16px; font-weight: 600; }
+  .subject-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 12px; font-weight: 500; padding: 4px 11px; border-radius: 20px; }
+  .tag.green { background: var(--green-light); color: var(--green-text); }
+  .tag.blue { background: var(--blue-light); color: var(--blue-text); }
+  .tag.amber { background: var(--amber-light); color: var(--amber-text); }
+  .tag.coral { background: var(--coral-light); color: var(--coral-text); }
+  .bar-wrap { margin-top: 14px; }
+  .bar-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
+  .bar { height: 5px; background: var(--gray); border-radius: 3px; }
+  .bar-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width 1s ease; }
+
+  /* TÓPICOS DETALHADOS */
+  .topicos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .topico-item { font-size: 13px; color: var(--text); padding: 6px 0; border-bottom: 1px solid var(--gray-border); display: flex; gap: 6px; align-items: flex-start; }
+  .topico-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); margin-top: 5px; flex-shrink: 0; }
+  .expand-btn { background: none; border: none; cursor: pointer; font-size: 12px; color: var(--green); font-family: inherit; font-weight: 500; margin-top: 10px; padding: 0; }
+  .topicos-extra { display: none; }
+  .topicos-extra.open { display: grid; }
+
+  /* QUESTÕES */
+  .q-progress { background: white; border: 1px solid var(--gray-border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .q-progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .q-progress-label { font-size: 13px; font-weight: 500; }
+  .q-progress-count { font-size: 12px; color: var(--text-muted); }
+  .progress-bar { height: 4px; background: var(--gray); border-radius: 2px; }
+  .progress-fill { height: 100%; background: var(--green); border-radius: 2px; transition: width 0.4s; }
+
+  .q-card { background: white; border: 1px solid var(--gray-border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+  .q-meta { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; }
+  .q-num { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .q-materia { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+  .q-text { font-size: 15px; color: var(--text); margin-bottom: 1rem; line-height: 1.65; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .opt { display: flex; gap: 12px; align-items: center; background: var(--gray); border: 1.5px solid transparent; border-radius: var(--radius-sm); padding: 12px 14px; cursor: pointer; transition: all 0.15s; font-family: inherit; font-size: 14px; color: var(--text); text-align: left; }
+  .opt:hover:not(:disabled) { border-color: var(--green); background: var(--green-light); }
+  .opt .opt-letter { font-weight: 700; font-size: 13px; color: var(--text-muted); min-width: 16px; }
+  .opt.correct { background: var(--green-light); border-color: var(--green); }
+  .opt.correct .opt-letter { color: var(--green-text); }
+  .opt.wrong { background: var(--red-light); border-color: #E24B4A; }
+  .opt.wrong .opt-letter { color: var(--red-text); }
+  .explanation { margin-top: 14px; padding: 12px 16px; background: var(--green-light); border-radius: var(--radius-sm); font-size: 13px; color: var(--green-text); line-height: 1.65; display: none; }
+  .explanation strong { font-weight: 600; }
+  .q-nav { display: flex; gap: 8px; margin-top: 12px; }
+  .q-nav-btn { padding: 9px 18px; border-radius: var(--radius-sm); border: 1.5px solid var(--gray-border); background: white; font-size: 13px; font-weight: 500; font-family: inherit; cursor: pointer; color: var(--text); transition: all 0.15s; }
+  .q-nav-btn:hover { border-color: var(--green); color: var(--green); }
+  .score-box { background: white; border: 1px solid var(--gray-border); border-radius: var(--radius); padding: 2rem; text-align: center; display: none; }
+  .score-num { font-size: 48px; font-weight: 700; color: var(--green); }
+  .score-label { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+  .restart-btn { margin-top: 1.5rem; padding: 10px 24px; background: var(--green); color: white; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; }
+
+  /* FILTROS DE MATÉRIA */
+  .filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .filter-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--gray-border); background: white; font-size: 12px; font-weight: 500; font-family: inherit; cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
+  .filter-btn.active { background: var(--green); border-color: var(--green); color: white; }
+
+  /* VIDEOS */
+  .video-section-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin: 1.25rem 0 8px; }
+  .video-card { display: flex; align-items: center; gap: 14px; background: white; border: 1px solid var(--gray-border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 8px; text-decoration: none; transition: border-color 0.15s; }
+  .video-card:hover { border-color: var(--green); }
+  .video-thumb { width: 50px; height: 35px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .video-info .video-title { font-size: 14px; font-weight: 500; color: var(--text); }
+  .video-info .video-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .video-arrow { margin-left: auto; font-size: 18px; color: var(--text-muted); }
+  .info-box { margin-top: 1.25rem; padding: 12px 16px; background: var(--amber-light); border-radius: var(--radius-sm); font-size: 13px; color: var(--amber-text); line-height: 1.6; }
+
+  @media (max-width: 500px) {
+    .stats { grid-template-columns: repeat(3, 1fr); }
+    .stat-num { font-size: 22px; }
+    .hero h1 { font-size: 24px; }
+    .topicos-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">📘 Produto Digital · IFSUL</div>
+    <h1>Guia Completo para Passar no IFSUL</h1>
+    <p>Mais de 100 exercícios comentados, resumos organizados e videoaulas selecionadas</p>
+    <div class="badge-row">
+      <span class="badge">✓ Matemática</span>
+      <span class="badge">✓ Português</span>
+      <span class="badge">✓ História</span>
+      <span class="badge">✓ Geografia</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Exercícios comentados</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Matérias completas</div></div>
+    <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Videoaulas selecionadas</div></div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav">
+    <button class="nav-btn active" onclick="switchTab('resumos', this)">📚 Resumos</button>
+    <button class="nav-btn" onclick="switchTab('exercicios', this)">✏️ Exercícios</button>
+    <button class="nav-btn" onclick="switchTab('videos', this)">▶️ Videoaulas</button>
+  </div>
+
+  <!-- ABA: RESUMOS -->
+  <div id="tab-resumos" class="section active">
+
+    <div class="subject-card">
+      <div class="subject-header">
+        <div class="subject-icon" style="background:#E6F1FB">📐</div>
+        <div>
+          <div class="subject-title">Matemática</div>
+          <div class="subject-sub">12 tópicos cobrados na prova</div>
+        </div>
+      </div>
+      <div class="tag-list">
+        <span class="tag blue">Equação 2º grau</span>
+        <span class="tag blue">Produtos notáveis</span>
+        <span class="tag blue">Pitágoras</span>
+        <span class="tag blue">Regra de três</span>
+        <span class="tag blue">Teorema de Tales</span>
+        <span class="tag blue">Porcentagem</span>
+        <span class="tag blue">Fatoração</span>
+        <span class="tag blue">Áreas planas</span>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>Incidência na prova</span><span>Alta</span></div>
+        <div class="bar"><div class="bar-fill" style="width:90%"></div></div>
+      </div>
+      <button class="expand-btn" onclick="toggleTopicos(this)">▼ Ver todos os tópicos</button>
+      <div class="topicos-extra topicos-grid">
+        <div class="topico-item"><div class="topico-dot"></div>Conjuntos numéricos (N, Z, Q, R)</div>
+        <div class="topico-item"><div class="topico-dot"></div>Expressões algébricas</div>
+        <div class="topico-item"><div class="topico-dot"></div>Radicais e racionalização</div>
+        <div class="topico-item"><div class="topico-dot"></div>Equações fracionárias</div>
+        <div class="topico-item"><div class="topico-dot"></div>Sistemas do 1º e 2º grau</div>
+        <div class="topico-item"><div class="topico-dot"></div>Razão e proporção</div>
+        <div class="topico-item"><div class="topico-dot"></div>Juros simples</div>
+        <div class="topico-item"><div class="topico-dot"></div>Geometria plana — ângulos</div>
+        <div class="topico-item"><div class="topico-dot"></div>Polígonos — soma ângulos internos</div>
+        <div class="topico-item"><div class="topico-dot"></div>Triângulos — congruência e semelhança</div>
+        <div class="topico-item"><div class="topico-dot"></div>Circunferência e círculo</div>
+        <div class="topico-item"><div class="topico-dot"></div>Volumes — cubo e paralelepípedo</div>
+      </div>
+    </div>
+
+    <div class="subject-card">
+      <div class="subject-header">
+        <div class="subject-icon" style="background:#E1F5EE">📝</div>
+        <div>
+          <div class="subject-title">Língua Portuguesa</div>
+          <div class="subject-sub">11 tópicos cobrados na prova</div>
+        </div>
+      </div>
+      <div class="tag-list">
+        <span class="tag green">Interpretação de texto</span>
+        <span class="tag green">Classes gramaticais</span>
+        <span class="tag green">Pontuação</span>
+        <span class="tag green">Concordância verbal</span>
+        <span class="tag green">Figuras de linguagem</span>
+        <span class="tag green">Coesão e coerência</span>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>Incidência na prova</span><span>Alta</span></div>
+        <div class="bar"><div class="bar-fill" style="width:85%"></div></div>
+      </div>
+      <button class="expand-btn" onclick="toggleTopicos(this)">▼ Ver todos os tópicos</button>
+      <div class="topicos-extra topicos-grid">
+        <div class="topico-item"><div class="topico-dot"></div>Gêneros textuais (notícia, poema, crônica)</div>
+        <div class="topico-item"><div class="topico-dot"></div>Denotação e conotação</div>
+        <div class="topico-item"><div class="topico-dot"></div>Sinonímia e antonímia</div>
+        <div class="topico-item"><div class="topico-dot"></div>Polissemia e homonímia</div>
+        <div class="topico-item"><div class="topico-dot"></div>Discurso direto e indireto</div>
+        <div class="topico-item"><div class="topico-dot"></div>Ortografia e acentuação</div>
+        <div class="topico-item"><div class="topico-dot"></div>Concordância nominal</div>
+        <div class="topico-item"><div class="topico-dot"></div>Crase</div>
+        <div class="topico-item"><div class="topico-dot"></div>Níveis de linguagem</div>
+      </div>
+    </div>
+
+    <div class="subject-card">
+      <div class="subject-header">
+        <div class="subject-icon" style="background:#FAEEDA">🏛</div>
+        <div>
+          <div class="subject-title">História</div>
+          <div class="subject-sub">8 tópicos cobrados na prova</div>
+        </div>
+      </div>
+      <div class="tag-list">
+        <span class="tag amber">Feudalismo</span>
+        <span class="tag amber">Rev. Industrial</span>
+        <span class="tag amber">Rev. Francesa</span>
+        <span class="tag amber">Guerras Mundiais</span>
+        <span class="tag amber">Era Vargas</span>
+        <span class="tag amber">Brasil República</span>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>Incidência na prova</span><span>Média-Alta</span></div>
+        <div class="bar"><div class="bar-fill" style="width:75%"></div></div>
+      </div>
+      <button class="expand-btn" onclick="toggleTopicos(this)">▼ Ver todos os tópicos</button>
+      <div class="topicos-extra topicos-grid">
+        <div class="topico-item"><div class="topico-dot"></div>Pré-História e Idade Antiga</div>
+        <div class="topico-item"><div class="topico-dot"></div>Egito, Grécia e Roma</div>
+        <div class="topico-item"><div class="topico-dot"></div>Renascimento e Reformas</div>
+        <div class="topico-item"><div class="topico-dot"></div>Absolutismo e Mercantilismo</div>
+        <div class="topico-item"><div class="topico-dot"></div>Imperialismo</div>
+        <div class="topico-item"><div class="topico-dot"></div>Brasil Colonial e Independência</div>
+        <div class="topico-item"><div class="topico-dot"></div>Proclamação da República</div>
+        <div class="topico-item"><div class="topico-dot"></div>Ditadura Militar e Nova República</div>
+      </div>
+    </div>
+
+    <div class="subject-card">
+      <div class="subject-header">
+        <div class="subject-icon" style="background:#FAECE7">🌎</div>
+        <div>
+          <div class="subject-title">Geografia</div>
+          <div class="subject-sub">10 tópicos cobrados na prova</div>
+        </div>
+      </div>
+      <div class="tag-list">
+        <span class="tag coral">Cartografia</span>
+        <span class="tag coral">Clima</span>
+        <span class="tag coral">Globalização</span>
+        <span class="tag coral">Urbanização</span>
+        <span class="tag coral">Blocos econômicos</span>
+        <span class="tag coral">Fontes de energia</span>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>Incidência na prova</span><span>Média</span></div>
+        <div class="bar"><div class="bar-fill" style="width:68%"></div></div>
+      </div>
+      <button class="expand-btn" onclick="toggleTopicos(this)">▼ Ver todos os tópicos</button>
+      <div class="topicos-extra topicos-grid">
+        <div class="topico-item"><div class="topico-dot"></div>Coordenadas geográficas e fusos</div>
+        <div class="topico-item"><div class="topico-dot"></div>Escalas e cartografia</div>
+        <div class="topico-item"><div class="topico-dot"></div>Solo e relevo</div>
+        <div class="topico-item"><div class="topico-dot"></div>Vegetação brasileira</div>
+        <div class="topico-item"><div class="topico-dot"></div>Problemas ambientais</div>
+        <div class="topico-item"><div class="topico-dot"></div>Desenvolvimento sustentável</div>
+        <div class="topico-item"><div class="topico-dot"></div>Agricultura familiar x agronegócio</div>
+        <div class="topico-item"><div class="topico-dot"></div>Crescimento demográfico</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ABA: EXERCÍCIOS -->
+  <div id="tab-exercicios" class="section">
+
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="filterQ('todas', this)">Todas</button>
+      <button class="filter-btn" onclick="filterQ('Matemática', this)">Matemática</button>
+      <button class="filter-btn" onclick="filterQ('Português', this)">Português</button>
+      <button class="filter-btn" onclick="filterQ('História', this)">História</button>
+      <button class="filter-btn" onclick="filterQ('Geografia', this)">Geografia</button>
+    </div>
+
+    <div class="q-progress">
+      <div class="q-progress-top">
+        <span class="q-progress-label" id="q-label">Questão 1 de 8</span>
+        <span class="q-progress-count" id="q-score-display">0 acertos</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="q-bar" style="width:12.5%"></div></div>
+    </div>
+
+    <div id="q-area"></div>
+    <div class="score-box" id="score-box">
+      <div class="score-num" id="score-num">0/8</div>
+      <div class="score-label">acertos neste simulado</div>
+      <br>
+      <div id="score-msg" style="font-size:14px;color:#6b7280;margin-top:8px;line-height:1.6"></div>
+      <button class="restart-btn" onclick="restartQ()">🔄 Recomeçar</button>
+    </div>
+
+  </div>
+
+  <!-- ABA: VÍDEOS -->
+  <div id="tab-videos" class="section">
+
+    <div class="video-section-label">📐 Matemática</div>
+    <a class="video-card" href="https://www.youtube.com/results?search_query=equacao+2+grau+vestibular+ifsul" target="_blank">
+      <div class="video-thumb" style="background:#E6F1FB">▶️</div>
+      <div class="video-info">
+        <div class="video-title">Equação do 2º grau — Bhaskara passo a passo</div>
+        <div class="video-sub">Substitua pelo link que você usou nos estudos</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>
+    <a class="video-card" href="https://www.youtube.com/results?search_query=produtos+notaveis+fatoracao+vestibular" target="_blank">
+      <div class="video-thumb" style="background:#E6F1FB">▶️</div>
+      <div class="video-info">
+        <div class="video-title">Produtos notáveis e fatoração completo</div>
+        <div class="video-sub">Substitua pelo link que você usou nos estudos</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>
+    <a class="video-card" href="https://www.youtube.com/results?search_query=teorema+pitagoras+tales+exercicios" target="_blank">
+      <div class="video-thumb" style="background:#E6F1FB">▶️</div>
+      <div class="video-info">
+        <div class="video-title">Pitágoras e Tales — com exercícios resolvidos</div>
+        <div class="video-sub">Substitua pelo link que você usou nos estudos</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>
+    <a class="video-card" href="https://www.youtube.com/results?search_query=regra+de+tres+porcentagem+vestibular" target="_blank">
+      <div class="video-thumb" style="background:#E6F1FB">▶️</div>
+      <div class="video-info">
+        <div class="video-title">Regra de três e porcentagem — do básico ao avançado</div>
+        <div class="video-sub">Substitua pelo link que você usou nos estudos</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>
+
+    <div class="video-section-label">📝 Português</div>
+    <a class="video-card" href="https://www.youtube.com/results?search_query=interpretacao+de+texto+vestibular+tecnicas" target="_blank">
+      <div class="video-thumb" style="background:#E1F5EE">▶️</div>
+      <div class="video-info">
+        <div class="video-title">Interpretação de texto — técnicas infalíveis</div>
+        <div class="video-sub">Substitua pelo link que você usou nos estudos</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>
+    <a class="video-card" href="https://www.youtube.com/results?search_query=figuras+de+linguagem+vestibular+todas" target="_blank">
+      <div class="video-thumb" style="background:#E1F5EE">▶️</div>
+      <div class="video-info">
+        <div class="video-title">Figuras de linguagem — todas em 1 vídeo</div>
+        <div class="video-sub">Substitua pelo link que você usou nos estudos</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>
+    <a class="video-card" href="https://www.youtube.com/results?search_query=concordancia+verbal+nominal+vestibular" target="_blank">
+      <div class="video-thumb" style="background:#E1F5EE">▶️</div>
+      <div class="video-info">
+        <div class="video-title">Concordância verbal e nominal resumido</div>
+        <div class="video-sub">Substitua pelo link que você usou nos estudos</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>
+
+    <div class="video-section-label">🏛 História</div>
+    <a class="video-card" href="https://www.youtube.com/results?search_query=revolucao+francesa+resumo+vestibular" target="_blank">
+      <div class="video-thumb" style="background:#FAEEDA">▶️</div>
+      <div class="video-info">
+        <div class="video-title">Revolução Francesa — resumo completo</div>
+        <div class="video-sub">Substitua pelo link que você usou nos estudos</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>
+    <a class="video-card" href="https://www.youtube.com/results?search_query=era+vargas+brasil+resumo+vestibular" target="_blank">
+      <div class="video-thumb" style="background:#FAEEDA">▶️</div>
+      <div class="video-info">
+        <div class="video-title">Era Vargas — Brasil no século XX</div>
+        <div class="video-sub">Substitua pelo link que você usou nos estudos</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>
+
+    <div class="video-section-label">🌎 Geografia</div>
+    <a class="video-card" href="https://www.youtube.com/results?search_query=globalizacao+blocos+economicos+vestibular" target="_blank">
+      <div class="video-thumb" style="background:#FAECE7">▶️</div>
+      <div class="video-info">
+        <div class="video-title">Globalização e blocos econômicos</div>
+        <div class="video-sub">Substitua pelo link que você usou nos estudos</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>
+    <a class="video-card" href="https://www.youtube.com/results?search_query=cartografia+escalas+coordenadas+vestibular" target="_blank">
+      <div class="video-thumb" style="background:#FAECE7">▶️</div>
+      <div class="video-info">
+        <div class="video-title">Cartografia, escalas e coordenadas geográficas</div>
+        <div class="video-sub">Substitua pelo link que você usou nos estudos</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>
+
+    <div class="info-box">
+      ⚠️ <strong>Atenção:</strong> No produto final, substitua todos os links acima pelos vídeos reais que te ajudaram a estudar. Basta copiar o link do YouTube e colar no lugar certo no código HTML.
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const allQuestions = [
+  { materia: "Matemática", texto: "Quais são as raízes da equação x² − 5x + 6 = 0?", opcoes: ["x = 1 e x = 6","x = 2 e x = 3","x = −2 e x = −3","x = 3 e x = −2"], correta: 1, explicacao: "Usando fatoração: x² − 5x + 6 = (x − 2)(x − 3) = 0. Logo x = 2 ou x = 3." },
+  { materia: "Matemática", texto: "Qual é o resultado de (a + b)²?", opcoes: ["a² + b²","a² + ab + b²","a² + 2ab + b²","2a² + 2b²"], correta: 2, explicacao: "Produto notável: (a + b)² = a² + 2ab + b². O termo do meio (2ab) é o mais esquecido!" },
+  { materia: "Matemática", texto: "Um triângulo retângulo tem catetos de 3 cm e 4 cm. Qual é a hipotenusa?", opcoes: ["5 cm","6 cm","7 cm","√7 cm"], correta: 0, explicacao: "Pelo Teorema de Pitágoras: h² = 3² + 4² = 9 + 16 = 25. Logo h = 5 cm. Esse é o triângulo 3-4-5, clássico de prova!" },
+  { materia: "Matemática", texto: "Um produto custa R$80 e teve desconto de 15%. Qual o preço final?", opcoes: ["R$65,00","R$68,00","R$72,00","R$75,00"], correta: 1, explicacao: "15% de 80 = 0,15 × 80 = 12. Preço final = 80 − 12 = R$68,00." },
+  { materia: "Português", texto: "Qual figura de linguagem está em: 'O vento sussurrava segredos entre as árvores'?", opcoes: ["Metáfora","Hipérbole","Personificação","Ironia"], correta: 2, explicacao: "Personificação: o vento recebe a ação humana de 'sussurrar segredos'. Sempre que um elemento da natureza faz algo humano, é personificação." },
+  { materia: "Português", texto: "Assinale a alternativa em que há erro de concordância verbal:", opcoes: ["Os alunos estudaram muito.","Fazem dez anos que não o vejo.","A maioria dos estudantes passou.","Todos chegaram na hora."], correta: 1, explicacao: "O verbo 'fazer' indicando tempo é impessoal e fica no singular: 'Faz dez anos'. Usar 'fazem' é erro de concordância." },
+  { materia: "História", texto: "O feudalismo era caracterizado principalmente por:", opcoes: ["Relações comerciais entre cidades","Troca de proteção por trabalho na terra","Centralização do poder no rei","Expansão colonial ultramarina"], correta: 1, explicacao: "No feudalismo, o senhor feudal oferecia proteção e terra ao servo, que em troca prestava serviços e entregava parte da produção. Era uma relação de dependência." },
+  { materia: "Geografia", texto: "O Mercosul é um bloco econômico formado principalmente por países da:", opcoes: ["América do Norte","América Central","América do Sul","América Andina"], correta: 2, explicacao: "O Mercosul (Mercado Comum do Sul) é composto por Brasil, Argentina, Uruguai, Paraguai e Venezuela (suspensa). É o principal bloco da América do Sul." }
+];
+
+let filtered = [...allQuestions];
+let current = 0;
+let acertos = 0;
+let answered = false;
+let respondidas = new Array(allQuestions.length).fill(null);
+
+function filterQ(materia, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filtered = materia === 'todas' ? [...allQuestions] : allQuestions.filter(q => q.materia === materia);
+  current = 0; acertos = 0; answered = false;
+  respondidas = new Array(filtered.length).fill(null);
+  document.getElementById('score-box').style.display = 'none';
+  document.getElementById('q-area').style.display = 'block';
+  renderQ();
+}
+
+function renderQ() {
+  if (filtered.length === 0) {
+    document.getElementById('q-area').innerHTML = '<div style="text-align:center;padding:2rem;color:#6b7280">Nenhuma questão nesta matéria ainda.</div>';
+    return;
+  }
+  const q = filtered[current];
+  const total = filtered.length;
+  document.getElementById('q-label').textContent = `Questão ${current+1} de ${total}`;
+  document.getElementById('q-score-display').textContent = `${acertos} acerto${acertos !== 1 ? 's' : ''}`;
+  document.getElementById('q-bar').style.width = `${((current+1)/total)*100}%`;
+
+  const cores = { "Matemática": "background:#E6F1FB;color:#185FA5", "Português": "background:#E1F5EE;color:#085041", "História": "background:#FAEEDA;color:#854F0B", "Geografia": "background:#FAECE7;color:#993C1D" };
+  const prevResp = respondidas[current];
+
+  document.getElementById('q-area').innerHTML = `
+    <div class="q-card">
+      <div class="q-meta">
+        <span class="q-num">Questão ${current+1}</span>
+        <span class="q-materia" style="${cores[q.materia]||''};padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600">${q.materia}</span>
+      </div>
+      <div class="q-text">${q.texto}</div>
+      <div class="options">
+        ${q.opcoes.map((o,i) => {
+          let cls = '';
+          if (prevResp !== null) {
+            if (i === q.correta) cls = 'correct';
+            else if (i === prevResp && prevResp !== q.correta) cls = 'wrong';
+          }
+          return `<button class="opt ${cls}" onclick="answer(${i})" ${prevResp !== null ? 'disabled' : ''}>
+            <span class="opt-letter">${String.fromCharCode(65+i)}</span>${o}
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="explanation" id="exp" style="${prevResp !== null ? 'display:block' : ''}">${q.explicacao}</div>
+    </div>
+    <div class="q-nav">
+      ${current > 0 ? `<button class="q-nav-btn" onclick="prevQ()">← Anterior</button>` : ''}
+      ${current < filtered.length-1 ? `<button class="q-nav-btn" onclick="nextQ()">Próxima →</button>` : `<button class="q-nav-btn" onclick="showScore()">Ver resultado ✓</button>`}
+    </div>
+  `;
+  answered = prevResp !== null;
+}
+
+function answer(i) {
+  if (answered) return;
+  answered = true;
+  const q = filtered[current];
+  respondidas[current] = i;
+  if (i === q.correta) acertos++;
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach((b,j) => {
+    b.disabled = true;
+    if (j === q.correta) b.classList.add('correct');
+    else if (j === i && i !== q.correta) b.classList.add('wrong');
+  });
+  document.getElementById('exp').style.display = 'block';
+  document.getElementById('q-score-display').textContent = `${acertos} acerto${acertos !== 1 ? 's' : ''}`;
+}
+
+function nextQ() { current++; answered = false; renderQ(); }
+function prevQ() { current--; answered = false; renderQ(); }
+
+function showScore() {
+  const total = filtered.length;
+  document.getElementById('q-area').style.display = 'none';
+  const box = document.getElementById('score-box');
+  box.style.display = 'block';
+  document.getElementById('score-num').textContent = `${acertos}/${total}`;
+  const pct = Math.round((acertos/total)*100);
+  let msg = '';
+  if (pct >= 80) msg = '🎉 Excelente! Você está bem preparado para o IFSUL!';
+  else if (pct >= 60) msg = '👍 Bom resultado! Revise os erros e você chega lá.';
+  else msg = '📖 Ainda há espaço para melhorar. Volte aos resumos e tente novamente!';
+  document.getElementById('score-msg').textContent = msg;
+}
+
+function restartQ() {
+  current = 0; acertos = 0; answered = false;
+  respondidas = new Array(filtered.length).fill(null);
+  document.getElementById('score-box').style.display = 'none';
+  document.getElementById('q-area').style.display = 'block';
+  renderQ();
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'exercicios') renderQ();
+}
+
+function toggleTopicos(btn) {
+  const extra = btn.nextElementSibling;
+  const open = extra.classList.toggle('open');
+  btn.textContent = open ? '▲ Ocultar tópicos' : '▼ Ver todos os tópicos';
+}
+
+renderQ();
+</script>
+</body>
+</html>
